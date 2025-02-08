@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		943129272D512F840059769B /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 943129262D512F840059769B /* SwiftSoup */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		943129062D502F000059769B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				943129272D512F840059769B /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = Cookbook;
 			packageProductDependencies = (
+				943129262D512F840059769B /* SwiftSoup */,
 			);
 			productName = Cookbook;
 			productReference = 943128F52D502EFF0059769B /* Cookbook.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 943128EC2D502EFF0059769B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				943129252D503DDF0059769B /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 943128F62D502EFF0059769B /* Products */;
 			projectDirPath = "";
@@ -552,6 +561,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		943129252D503DDF0059769B /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.7;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		943129262D512F840059769B /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 943129252D503DDF0059769B /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 943128ED2D502EFF0059769B /* Project object */;
 }
