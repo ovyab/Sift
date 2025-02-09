@@ -7,25 +7,68 @@ struct RecipeView: View {
     @State private var recipeInstructions: [String] = []
     @State private var recipeIngredients: [String] = []
     @State private var isLoading = false
-    @State private var showRecipe = false
+    @State private var navigateToRecipe = false
     @State private var errorMessage: String? = nil
     @State private var showError = false
+    @State private var recentRecipes: [Recipe] = []
 
     var body: some View {
-        VStack {
-            TextField("Enter recipe URL", text: $urlString)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("Get Recipe") {
-                Task {
-                    await fetchRecipe()
+        ScrollView {
+            VStack(spacing: 20) {
+                // URL Input Section
+                VStack {
+                    TextField("Enter recipe URL", text: $urlString)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                    
+                    Button("Get Recipe") {
+                        Task {
+                            await fetchRecipe()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                    
+                    if isLoading {
+                        ProgressView()
+                    }
                 }
-            }
-            .padding()
-            
-            if isLoading {
-                ProgressView()
+                
+                // Recent Recipes Section
+                if !recentRecipes.isEmpty {
+                    VStack(alignment: .leading, spacing: 15) {
+                        Text("Recently Prettified Recipes")
+                            .font(.headline)
+                            .padding(.horizontal)
+                        
+                        ForEach(recentRecipes) { recipe in
+                            NavigationLink(
+                                destination: RecipeDetailView(
+                                    title: recipe.title,
+                                    ingredients: recipe.ingredients,
+                                    instructions: recipe.instructions,
+                                    urlString: recipe.urlString
+                                )
+                            ) {
+                                VStack(alignment: .leading) {
+                                    Text(recipe.title)
+                                        .foregroundColor(.primary)
+                                        .lineLimit(2)
+                                    Text(recipe.urlString)
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                        .lineLimit(1)
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color(.systemBackground))
+                                .cornerRadius(10)
+                                .shadow(radius: 2)
+                            }
+                            .padding(.horizontal)
+                        }
+                    }
+                }
             }
         }
         .navigationTitle("Recipe Parser")
@@ -34,15 +77,19 @@ struct RecipeView: View {
         } message: {
             Text(errorMessage ?? "An unknown error occurred")
         }
-        .sheet(isPresented: $showRecipe) {
-            if !recipeIngredients.isEmpty && !recipeInstructions.isEmpty {
-                RecipeDetailView(
+        .background(
+            NavigationLink(
+                destination: RecipeDetailView(
                     title: recipeTitle,
                     ingredients: recipeIngredients,
                     instructions: recipeInstructions,
                     urlString: urlString
-                )
-            }
+                ),
+                isActive: $navigateToRecipe
+            ) { EmptyView() }
+        )
+        .onAppear {
+            recentRecipes = RecipeStorage.shared.loadRecipes()
         }
     }
     
@@ -70,7 +117,7 @@ struct RecipeView: View {
             
             let (ingredients, instructions) = try await RecipeParser.parseRecipe(from: htmlContent)
             
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.recipeIngredients = ingredients
                 self.recipeInstructions = instructions
                 self.isLoading = false
@@ -79,11 +126,20 @@ struct RecipeView: View {
                     self.errorMessage = "Could not find recipe content"
                     self.showError = true
                 } else {
-                    self.showRecipe = true
+                    // Save recipe before navigating
+                    let recipe = Recipe(
+                        title: recipeTitle,
+                        ingredients: ingredients,
+                        instructions: instructions,
+                        urlString: urlString
+                    )
+                    RecipeStorage.shared.saveRecipe(recipe)
+                    recentRecipes = RecipeStorage.shared.loadRecipes()
+                    self.navigateToRecipe = true
                 }
             }
         } catch {
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.errorMessage = error.localizedDescription
                 self.showError = true
                 self.isLoading = false
@@ -92,39 +148,10 @@ struct RecipeView: View {
     }
 }
 
-#Preview {
-    RecipeView()
-}
-
 struct ContentView: View {
     var body: some View {
-        TabView {
+        NavigationView {
             RecipeView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "fork.knife")
-                        Text("Recipe")
-                    }
-                }
-                .tag(0)
-            
-            RecipeTestView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "checklist")
-                        Text("Test")
-                    }
-                }
-                .tag(1)
-            
-            OpenAIKeyTester()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "key")
-                        Text("API Key")
-                    }
-                }
-                .tag(2)
         }
     }
 }

@@ -5,73 +5,77 @@ struct RecipeDetailView: View {
     let ingredients: [String]
     let instructions: [String]
     let urlString: String
+    @State private var checkedIngredients: Set<String> = []
+    @State private var isIngredientsExpanded = true
+    @State private var isInstructionsExpanded = true
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Text(title)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.bottom)
+                    .font(.title)
+                    .bold()
+                    .padding(.horizontal)
                 
-                if ingredients.isEmpty || instructions.isEmpty {
-                    VStack(spacing: 16) {
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.system(size: 50))
-                            .foregroundColor(.orange)
-                        
-                        Text("Unable to Parse Recipe")
-                            .font(.title2)
-                            .fontWeight(.bold)
-
-                        Text("We found a recipe on this page but were unable to extract the ingredients and instructions. This might happen if the recipe is in an unusual format.")
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.secondary)
-                        
-                        Link("View original recipe", destination: URL(string: urlString) ?? URL(string: "https://apple.com")!)
-                            .foregroundColor(.blue)
-                            .padding(.top)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding()
-                } else {
-                    // Ingredients Section
-                    VStack(alignment: .leading, spacing: 10) {
+                // Ingredients section
+                DisclosureGroup(
+                    isExpanded: $isIngredientsExpanded,
+                    content: {
+                        VStack(alignment: .leading, spacing: 10) {
+                            ForEach(ingredients, id: \.self) { ingredient in
+                                HStack {
+                                    Button(action: {
+                                        if checkedIngredients.contains(ingredient) {
+                                            checkedIngredients.remove(ingredient)
+                                        } else {
+                                            checkedIngredients.insert(ingredient)
+                                        }
+                                    }) {
+                                        Image(systemName: checkedIngredients.contains(ingredient) ? "checkmark.square.fill" : "square")
+                                            .foregroundColor(checkedIngredients.contains(ingredient) ? .gray : .primary)
+                                    }
+                                    Text(ingredient)
+                                        .foregroundColor(checkedIngredients.contains(ingredient) ? .gray : .primary)
+                                        .strikethrough(checkedIngredients.contains(ingredient))
+                                }
+                            }
+                        }
+                        .padding(.leading)
+                    },
+                    label: {
                         Text("Ingredients")
                             .font(.title2)
-                            .fontWeight(.bold)
-                        
-                        ForEach(ingredients, id: \.self) { ingredient in
-                            HStack(alignment: .top) {
-                                Image(systemName: "circle.fill")
-                                    .font(.system(size: 8))
-                                    .padding(.top, 6)
-                                Text(ingredient)
+                            .bold()
+                    }
+                )
+                .padding(.horizontal)
+                
+                // Instructions section
+                DisclosureGroup(
+                    isExpanded: $isInstructionsExpanded,
+                    content: {
+                        VStack(alignment: .leading, spacing: 15) {
+                            ForEach(Array(instructions.enumerated()), id: \.element) { index, instruction in
+                                HStack(alignment: .top) {
+                                    Text("\(index + 1).")
+                                        .bold()
+                                        .frame(width: 25, alignment: .leading)
+                                    Text(instruction)
+                                }
                             }
                         }
-                    }
-                    .padding(.bottom)
-                    
-                    // Instructions Section
-                    VStack(alignment: .leading, spacing: 10) {
+                        .padding(.leading)
+                    },
+                    label: {
                         Text("Instructions")
                             .font(.title2)
-                            .fontWeight(.bold)
-                        
-                        ForEach(instructions.indices, id: \.self) { index in
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text("Step \(index + 1)")
-                                    .font(.headline)
-                                    .foregroundColor(.blue)
-                                Text(instructions[index])
-                                    .font(.body)
-                            }
-                            .padding(.bottom, 5)
-                        }
+                            .bold()
                     }
-                }
+                )
+                .padding(.horizontal)
             }
-            .padding()
+            .padding(.vertical)
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 } 
