@@ -17,6 +17,11 @@ struct RecipeView: View {
             VStack(spacing: 20) {
                 // URL Input Section
                 VStack {
+                    Text("Prettify any online recipe into a pretty, readable version")
+                        .font(Font.custom("Advent Pro", size: 45).weight(.bold))
+                        .lineSpacing(54)
+                        .foregroundColor(.black)
+                    
                     TextField("Enter recipe URL", text: $urlString)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
