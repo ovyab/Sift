@@ -12,78 +12,127 @@ struct RecipeView: View {
     @State private var showError = false
     @State private var recentRecipes: [Recipe] = []
 
-    init() {
-        // Debug: Print all available font names
-        for family in UIFont.familyNames.sorted() {
-            print("Family: \(family)")
-            for name in UIFont.fontNames(forFamilyName: family) {
-                print("   Font: \(name)")
-            }
-        }
-    }
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // URL Input Section
-                VStack {
-                    Text("Sift through the clutter in online recipes.")
+            VStack(spacing: 48) {
+                // Spacer to push content down
+                Spacer()
+                    .frame(height: 160)  // Fixed height of 300pt from top
+                
+                // Title Section
+                VStack(spacing: 16) {
+                    Text("Make online recipes\neasier to read")
+                        .font(Font.custom("InstrumentSerif-Regular", size: 48))
+                        .tracking(-0.02)
+                        .lineSpacing(-24)
+                        .minimumScaleFactor(0.5)
+                        .foregroundColor(Theme.Colors.light)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
-                        .padding(.vertical)
                     
-                    TextField("Paste a recipe URL", text: $urlString)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
+                    Text("Paste a recipe URL, and Sift returns a clean,\nuser-friendly version in seconds.")
+                        .font(Theme.Typography.p1)
+                        .foregroundColor(Theme.Colors.grey)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .multilineTextAlignment(.center)
+                }
+                
+                // Input and Buttons Section
+                VStack(spacing: 16) {  // Consistent spacing between elements
+                    // URL Input
+                    HStack(spacing: 6) {
+                        TextField("Paste a recipe URL", text: $urlString)
+                            .font(Theme.Typography.p1)
+                            .foregroundColor(Theme.Colors.light)
+                            .padding(.leading, 24)
+                        
+                        // Copy button
+                        Button(action: {
+                            if let clipboardString = UIPasteboard.general.string {
+                                urlString = clipboardString
+                            }
+                        }) {
+                            Image(systemName: "doc.on.doc")
+                                .foregroundColor(Theme.Colors.light)
+                                .frame(width: 24, height: 24)
+                                .padding(10)
+                                .background(
+                                    LinearGradient(
+                                        gradient: Gradient(
+                                            colors: [
+                                                Color.white.opacity(0),
+                                                Color.white.opacity(0.08)
+                                            ]
+                                        ),
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    )
+                                )
+                                .cornerRadius(24)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 24)
+                                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                                )
+                                .padding(4)
+                        }
+                    }
+                    .frame(height: 53)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(
+                                colors: [
+                                    Color.white.opacity(0),
+                                    Color.white.opacity(0.08)
+                                ]
+                            ),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .cornerRadius(24)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                    )
+                    .shadow(color: Color.black.opacity(0.05), radius: 10)
+                    .frame(maxWidth: 345)
                     
-                    Button("Prettify recipe") {
+                    // Sift Recipe Button (Primary)
+                    Button(action: {
                         Task {
                             await fetchRecipe()
                         }
-                    }
-                    .padding()
-                    
-                    if isLoading {
-                        ProgressView()
-                    }
-                }
-                
-                // Recent Recipes Section
-                if !recentRecipes.isEmpty {
-                    VStack(alignment: .leading, spacing: 15) {
-                        Text("Recent Recipes")
-                            .font(.headline)
-                            .padding(.horizontal)
-                        
-                        ForEach(recentRecipes) { recipe in
-                            NavigationLink(
-                                destination: RecipeDetailView(
-                                    title: recipe.title,
-                                    ingredients: recipe.ingredients,
-                                    instructions: recipe.instructions,
-                                    urlString: recipe.urlString
-                                )
-                            ) {
-                                VStack(alignment: .leading) {
-                                    Text(recipe.title)
-                                        .foregroundColor(.primary)
-                                        .lineLimit(2)
-                                    Text(recipe.urlString)
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color(.systemBackground))
-                                .cornerRadius(10)
-                                .shadow(radius: 2)
-                            }
-                            .padding(.horizontal)
+                    }) {
+                        HStack(spacing: 6) {
+                            Text("Sift recipe")
+                                .font(Theme.Typography.p1)
+                                .foregroundColor(Theme.Colors.light)
                         }
                     }
+                    .buttonStyle(Theme.PrimaryButtonStyle())
+                    
+                    // Recent Recipes Button (Secondary)
+                    NavigationLink {
+                        RecentRecipesView()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Text("View recent recipes")
+                                .font(Theme.Typography.p1)
+                                .foregroundColor(Theme.Colors.light)
+                        }
+                    }
+                    .buttonStyle(Theme.SecondaryButtonStyle())
+                }
+                
+                if isLoading {
+                    ProgressView()
                 }
             }
+            .frame(maxWidth: 600)
         }
+        .background(Theme.Colors.dark)  // Add dark background color
+        .edgesIgnoringSafeArea(.all)   // Extend color to edges
         .alert("Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -168,6 +217,7 @@ struct ContentView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarHidden(true)
         }
+        .preferredColorScheme(.dark)
     }
 }
 
