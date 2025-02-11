@@ -12,26 +12,34 @@ struct RecipeView: View {
     @State private var showError = false
     @State private var recentRecipes: [Recipe] = []
 
+    init() {
+        // Debug: Print all available font names
+        for family in UIFont.familyNames.sorted() {
+            print("Family: \(family)")
+            for name in UIFont.fontNames(forFamilyName: family) {
+                print("   Font: \(name)")
+            }
+        }
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 // URL Input Section
                 VStack {
-                    Text("Prettify any online recipe into a pretty, readable version")
-                        .font(Font.custom("Advent Pro", size: 45).weight(.bold))
-                        .lineSpacing(54)
-                        .foregroundColor(.black)
+                    Text("Sift through the clutter in online recipes.")
+                        .multilineTextAlignment(.center)
+                        .padding(.vertical)
                     
-                    TextField("Enter recipe URL", text: $urlString)
+                    TextField("Paste a recipe URL", text: $urlString)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                     
-                    Button("Get Recipe") {
+                    Button("Prettify recipe") {
                         Task {
                             await fetchRecipe()
                         }
                     }
-                    .buttonStyle(.borderedProminent)
                     .padding()
                     
                     if isLoading {
@@ -42,7 +50,7 @@ struct RecipeView: View {
                 // Recent Recipes Section
                 if !recentRecipes.isEmpty {
                     VStack(alignment: .leading, spacing: 15) {
-                        Text("Recently Prettified Recipes")
+                        Text("Recent Recipes")
                             .font(.headline)
                             .padding(.horizontal)
                         
@@ -76,7 +84,6 @@ struct RecipeView: View {
                 }
             }
         }
-        .navigationTitle("Recipe Parser")
         .alert("Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -97,6 +104,7 @@ struct RecipeView: View {
             recentRecipes = RecipeStorage.shared.loadRecipes()
         }
     }
+    
     
     func fetchRecipe() async {
         isLoading = true
@@ -157,6 +165,8 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             RecipeView()
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(true)
         }
     }
 }
