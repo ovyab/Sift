@@ -18,116 +18,81 @@ struct RecipeView: View {
             VStack(spacing: 48) {
                 // Spacer to push content down
                 Spacer()
-                    .frame(height: 160)  // Fixed height of 300pt from top
-                
+                    .frame(height: 50)
+
+                // Carousel
+                RecipeCarousel()
+                    .frame(height: 200)
                 // Title Section
-                VStack(spacing: 16) {
-                    Text("Make online recipes\neasier to read")
-                        .font(Font.custom("InstrumentSerif-Regular", size: 48))
-                        .tracking(-0.02)
-                        .lineSpacing(-24)
-                        .minimumScaleFactor(0.5)
+                VStack(spacing: 12) {
+                    Text("Make online\nrecipes easier\nto read")
+                        .font(Theme.Typography.title)
+                        .lineSpacing(-48) // Adjusted line spacing for tighter text
+                        .multilineTextAlignment(.center)
                         .foregroundColor(Theme.Colors.light)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .multilineTextAlignment(.center)
-                    
-                    Text("Paste a recipe URL, and Sift returns a clean,\nuser-friendly version in seconds.")
+                    Text("Sift uses AI to convert online recipes\ninto clean, user-friendly ones in seconds.")
                         .font(Theme.Typography.p1)
-                        .foregroundColor(Theme.Colors.grey)
-                        .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
+                        .foregroundColor(Theme.Colors.light)
                 }
                 
                 // Input and Buttons Section
-                VStack(spacing: 16) {  // Consistent spacing between elements
+                VStack(spacing: 16) {
                     // URL Input
-                    HStack(spacing: 6) {
-                        TextField("Paste a recipe URL", text: $urlString)
+                    HStack {
+                        TextField("Paste a recipe URL →", text: $urlString)
                             .font(Theme.Typography.p1)
                             .foregroundColor(Theme.Colors.light)
                             .padding(.leading, 24)
-                        
-                        // Copy button
                         Button(action: {
                             if let clipboardString = UIPasteboard.general.string {
                                 urlString = clipboardString
                             }
                         }) {
                             Image(systemName: "doc.on.doc")
-                                .foregroundColor(Theme.Colors.light)
-                                .frame(width: 24, height: 24)
-                                .padding(10)
-                                .background(
-                                    LinearGradient(
-                                        gradient: Gradient(
-                                            colors: [
-                                                Color.white.opacity(0),
-                                                Color.white.opacity(0.08)
-                                            ]
-                                        ),
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                                )
-                                .cornerRadius(24)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
-                                )
-                                .padding(4)
+                                .foregroundColor(Theme.Colors.green)
+                                .frame(width: 44, height: 44)
+                                .background(Theme.Colors.light)
+                                .clipShape(Circle())
                         }
+                        .padding(.trailing, 8)
                     }
-                    .frame(height: 53)
+                    .frame(height: 56)
                     .background(
-                        LinearGradient(
-                            gradient: Gradient(
-                                colors: [
-                                    Color.white.opacity(0),
-                                    Color.white.opacity(0.08)
-                                ]
-                            ),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .cornerRadius(24)
+                        LinearGradient(gradient: Gradient(colors: [Color(red: 1, green: 1, blue: 1).opacity(0.06), Color(red: 1, green: 1, blue: 1).opacity(0.02)]), startPoint: .topTrailing, endPoint: .bottomLeading)
+)   
+                    .cornerRadius(28)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 24)
-                            .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                        RoundedRectangle(cornerRadius: 28)
+                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
                     )
-                    .shadow(color: Color.black.opacity(0.05), radius: 10)
-                    .frame(maxWidth: 345)
                     
-                    // Sift Recipe Button (Primary)
-                    Button(action: {
+                    // Buttons
+                    Button {
                         Task {
                             await fetchRecipe()
                         }
-                    }) {
-                        HStack(spacing: 6) {
+                    } label: {
+                        if isLoading {
+                            HStack {
+                                Text("Sifting through recipe...")
+                                ProgressView()
+                                    .tint(.white)
+                            }
+                        } else {
                             Text("Sift recipe")
-                                .font(Theme.Typography.p1)
-                                .foregroundColor(Theme.Colors.light)
                         }
                     }
-                    .buttonStyle(Theme.PrimaryButtonStyle())
-                    
-                    // Recent Recipes Button (Secondary)
-                    NavigationLink {
+                    .buttonStyle(Theme.PrimaryButtonStyle(isEnabled: !urlString.isEmpty))
+                    .disabled(urlString.isEmpty || isLoading)
+                    NavigationLink("View recent recipes") {
                         RecentRecipesView()
-                    } label: {
-                        HStack(spacing: 6) {
-                            Text("View recent recipes")
-                                .font(Theme.Typography.p1)
-                                .foregroundColor(Theme.Colors.light)
-                        }
                     }
                     .buttonStyle(Theme.SecondaryButtonStyle())
                 }
+                .padding(.horizontal, 24)
                 
-                if isLoading {
-                    ProgressView()
-                }
+                Spacer()
             }
             .frame(maxWidth: 600)
         }
@@ -144,7 +109,8 @@ struct RecipeView: View {
                     title: recipeTitle,
                     ingredients: recipeIngredients,
                     instructions: recipeInstructions,
-                    urlString: urlString
+                    urlString: urlString,
+                    accentColor: Theme.Colors.purple
                 ),
                 isActive: $navigateToRecipe
             ) { EmptyView() }
@@ -224,3 +190,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+

@@ -10,6 +10,7 @@ import SwiftSoup
 
 @main
 struct CookbookApp: App {
+    
     var body: some Scene {
         WindowGroup {
            ContentView()
