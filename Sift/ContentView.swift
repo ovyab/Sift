@@ -16,87 +16,111 @@ struct RecipeView: View {
     var body: some View {
         ZStack {
             ScrollView {
-                VStack(spacing: 32) {
-                    Image("Logo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40) // Adjust size as needed
-                        .padding(.top, 80) // Adjust top padding as needed
+                VStack(spacing: 48) {
+                    VStack {
+                        Image("Logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40)
+                            .padding(.top, 80)
+                    }
+                    
                     Spacer()
                         .frame(height: 100)
+                    
                     VStack(spacing: 12) {
                         Text("Make long recipes easy to read") 
                             .font(Theme.Typography.title)
-                            .lineSpacing(-108) // Adjusted line spacing for tighter text
+                            .lineSpacing(-64)
                             .multilineTextAlignment(.center)
                             .foregroundColor(Theme.Colors.dark)
                         Text("Enter a recipe URL and Sift spits out a\nclean, user friendly version.")
                             .font(Theme.Typography.p1)
                             .multilineTextAlignment(.center)
                             .foregroundColor(Theme.Colors.dark)
-                    }
-                    
-                    // Input and Buttons Section
-                    VStack(spacing: 16) {
-                        // URL Input
-                        HStack {
-                            TextField("Paste a recipe URL →", text: $urlString)
-                                .font(Theme.Typography.p1)
-                                .foregroundColor(Theme.Colors.dark)
-                                .padding(.leading, 24)
-                               
-                            Button(action: {
-                                if let clipboardString = UIPasteboard.general.string {
-                                    urlString = clipboardString
-                                }
-                            }) {
-                                Image(systemName: "doc.on.doc")
-                                    .foregroundColor(Theme.Colors.light)
-                                    .frame(width: 44, height: 44)
-                                    .background(Theme.Colors.darkGreen)
-                                    .clipShape(Circle())
-                            }
-                            .padding(.trailing, 8)
-                        }
-                        .frame(height: 56)
-                        .background(.white)
-                        .cornerRadius(28)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 28)
-                                .stroke(Theme.Colors.dark.opacity(0.5), lineWidth: 1)
-                        )
+
+                         Spacer()
+                        .frame(height: 16)
                         
-                        // Buttons
-                        Button {
-                            Task {
-                                await fetchRecipe()
-                            }
-                        } label: {
-                            if isLoading {
-                                HStack {
-                                    Text("Sifting through recipe...")
-                                    ProgressView()
-                                        .tint(.white)
+                        // Input and Buttons Section
+                        VStack(spacing: 16) {
+                            // URL Input
+                            HStack {
+                                TextField("Paste a recipe URL →", text: $urlString)
+                                    .font(Theme.Typography.p1)
+                                    .foregroundColor(Theme.Colors.dark)
+                                    .padding(.leading, 24)
+                                   
+                                Button(action: {
+                                    if let clipboardString = UIPasteboard.general.string {
+                                        urlString = clipboardString
+                                    }
+                                }) {
+                                    Image(systemName: "doc.on.doc")
+                                        .foregroundColor(Theme.Colors.light)
+                                        .frame(width: 44, height: 44)
+                                        .background(Theme.Colors.darkGreen)
+                                        .clipShape(Circle())
                                 }
-                            } else {
-                                Text("Sift recipe")
+                                .padding(.trailing, 8)
                             }
+                            .frame(height: 56)
+                            .background(.white)
+                            .cornerRadius(28)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 28)
+                                    .stroke(Theme.Colors.dark.opacity(0.5), lineWidth: 1)
+                            )
+                            
+                            // Buttons
+                            Button {
+                                Task {
+                                    await fetchRecipe()
+                                }
+                            } label: {
+                                if isLoading {
+                                    HStack {
+                                        Text("Sifting through recipe...")
+                                        ProgressView()
+                                            .tint(.white)
+                                    }
+                                } else {
+                                    Text("Sift recipe")
+                                }
+                            }
+                            .buttonStyle(Theme.PrimaryButtonStyle(isEnabled: !urlString.isEmpty))
+                            .disabled(urlString.isEmpty || isLoading)
+                            NavigationLink("View recent recipes →") {
+                                RecentRecipesView()
+                            }
+                            .buttonStyle(Theme.SecondaryButtonStyle())
                         }
-                        .buttonStyle(Theme.PrimaryButtonStyle(isEnabled: !urlString.isEmpty))
-                        .disabled(urlString.isEmpty || isLoading)
-                        NavigationLink("View recent recipes →") {
-                            RecentRecipesView()
-                        }
-                        .buttonStyle(Theme.SecondaryButtonStyle())
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.horizontal, 16)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.clear, Theme.Colors.light]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     
                     Spacer()
                 }
                 .frame(maxWidth: 600)
             }
+            .background(
+                ZStack {
+                    Image("LandingImage")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .ignoresSafeArea()
+                        .alignmentGuide(.top) { _ in 0 }
+                }
+                , alignment: .top)
         }
-        .background(Theme.Colors.light)  // Add dark background color
+        .background(Theme.Colors.light)
         .edgesIgnoringSafeArea(.all)   // Extend color to edges
         .alert("Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }

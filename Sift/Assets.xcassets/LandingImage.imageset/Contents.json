@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "Tile06.png",
+      "filename" : "bgimgshort1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Tile062x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
