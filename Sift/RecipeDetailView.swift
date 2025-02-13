@@ -59,7 +59,7 @@ struct RecipeDetailView: View {
                     }) {
                         HStack {
                             Text("Ingredients")
-                                .font(Theme.Typography.h2)
+                                .font(Theme.Typography.h1)
                                 .foregroundColor(accentColor)
                             Spacer()
                             Image(systemName: "chevron.down")
@@ -89,7 +89,7 @@ struct RecipeDetailView: View {
                                                     .overlay(
                                                         RoundedRectangle(cornerRadius: 4)
                                                             .inset(by: 0.5)
-                                                            .stroke(Color.black.opacity(0.5), lineWidth: 0.5)
+                                                            .stroke(Color.black.opacity(0.1), lineWidth: 0.5)
                                                     )
                                                 Image(systemName: "checkmark")
                                                     .foregroundColor(Theme.Colors.light)
@@ -140,7 +140,7 @@ struct RecipeDetailView: View {
                     }) {
                         HStack {
                             Text("Instructions")
-                                .font(Theme.Typography.h2)
+                                .font(Theme.Typography.h1)
                                 .foregroundColor(accentColor)
                             Spacer()
                             Image(systemName: "chevron.down")
@@ -170,7 +170,7 @@ struct RecipeDetailView: View {
                                                     .overlay(
                                                         RoundedRectangle(cornerRadius: 4)
                                                             .inset(by: 0.5)
-                                                            .stroke(Color.black.opacity(0.5), lineWidth: 0.5)
+                                                            .stroke(Color.black.opacity(0.1), lineWidth: 0.5)
                                                     )
                                                 Image(systemName: "checkmark")
                                                     .foregroundColor(Theme.Colors.light)
@@ -218,7 +218,7 @@ struct RecipeDetailView: View {
             }
             .padding(16)
         }
-        .background(Theme.Colors.light)
+        .background(.white)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             dismiss()

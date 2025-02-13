@@ -9,13 +9,13 @@ struct Recipe: Identifiable, Codable {
     let urlString: String
     let accentColor: Int // Store index of the color
     
-    init(title: String, ingredients: [String], instructions: [String], urlString: String) {
+    init(title: String, ingredients: [String], instructions: [String], urlString: String, accentColor: Int) {
         self.id = UUID()
         self.title = title
         self.ingredients = ingredients
         self.instructions = instructions
         self.urlString = urlString
-        self.accentColor = Int.random(in: 0...4) // Random index for 5 colors
+        self.accentColor = accentColor
     }
     
     enum CodingKeys: String, CodingKey {

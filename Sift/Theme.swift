@@ -4,6 +4,7 @@ enum Theme {
     enum Colors {
         static let pink = Color(red: 0.984, green: 0.671, blue: 0.851)    // #FBABD9
         static let light = Color(red: 0.961, green: 0.945, blue: 0.914)    // #F5F1E9
+        static let cream = Color(red: 0.967, green: 0.926, blue: 0.755)    // #F6EC9F
         static let butter = Color(red: 0.973, green: 0.906, blue: 0.596)  // #F8E798
         static let green = Color(red: 0.490, green: 0.722, blue: 0.420)    // Sage green
         static let darkGreen = Color(red: 0.267, green: 0.447, blue: 0.365) // Dark sage green
@@ -12,15 +13,22 @@ enum Theme {
         static let purple = Color(red: 0.231, green: 0.176, blue: 0.608)   // Deep purple
         static let lightPurple = Color(red: 0.51, green: 0.48, blue: 0.80)   // Light purple
         static let grey = Color(red: 0.51, green: 0.53, blue: 0.59)       //rgb(151, 138, 130)
+        
+        // Add card colors array
+        static let cardColors: [Color] = [
+            purple,
+            yellow,
+            darkGreen
+        ]
     }
     
     enum Typography {        
         // For backwards compatibility
-        static let title = Font.custom("RadioCanadaBig-Regular_Semibold", size: 38).leading(.tight)
-        static let h1 = Font.custom("RadioCanadaBig-Regular_Semibold", size: 28).leading(.tight)
+        static let title = Font.custom("InstrumentSerif-Regular", size: 38).italic().leading(.tight)
+        static let h1 = Font.custom("RadioCanadaBig-Regular_Medium", size: 28).leading(.tight)
         
         // Body Styles (Radio Canada)
-        static let h2 = Font.custom("RadioCanadaBig-Regular", size: 22)
+        static let h2 = Font.custom("RadioCanadaBig-Regular_Regular", size: 22)
         static let p1 = Font.custom("RadioCanadaBig-Regular", size: 17)
         static let p2 = Font.custom("RadioCanadaBig-Regular", size: 15)
         static let eyebrow = Font.custom("RadioCanadaBig-Regular", size: 15)

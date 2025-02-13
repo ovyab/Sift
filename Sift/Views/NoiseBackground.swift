@@ -70,10 +70,10 @@ struct MetalView: UIViewRepresentable {
             time += 0.016
             
             // Convert theme colors to float4
-            let color1 = colorToFloat4(UIColor(Theme.Colors.darkGreen))
-            let color2 = colorToFloat4(UIColor(Theme.Colors.dark))
-            let color3 = colorToFloat4(UIColor(Theme.Colors.darkGreen))
-            let color4 = colorToFloat4(UIColor(Theme.Colors.dark))
+            let color1 = colorToFloat4(UIColor(Theme.Colors.yellow))
+            let color2 = colorToFloat4(UIColor(Theme.Colors.butter))
+            let color3 = colorToFloat4(UIColor(Theme.Colors.cream))
+            let color4 = colorToFloat4(UIColor(Theme.Colors.light))
             
             var uniforms = Uniforms(
                 time: time,

@@ -29,12 +29,12 @@ struct RecipeView: View {
                         .frame(height: 100)
                     
                     VStack(spacing: 12) {
-                        Text("Make long recipes easy to read") 
-                            .font(Theme.Typography.title)
-                            .lineSpacing(-64)
+                        (Text("Make long recipes\n") + Text("easy to read").italic())
+                            .font(.custom("InstrumentSerif-Regular", size: 48))
+                            .lineSpacing(-48)
                             .multilineTextAlignment(.center)
                             .foregroundColor(Theme.Colors.dark)
-                        Text("Enter a recipe URL and Sift spits out a\nclean, user friendly version.")
+                        Text("Enter a recipe URL and Sift extracts\nthe ingredients and instructions.")
                             .font(Theme.Typography.p1)
                             .multilineTextAlignment(.center)
                             .foregroundColor(Theme.Colors.dark)
@@ -97,28 +97,21 @@ struct RecipeView: View {
                         }
                         .padding(.horizontal, 16)
                     }
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.clear, Theme.Colors.light]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
+                    // .background(
+                    //     LinearGradient(
+                    //         gradient: Gradient(colors: [.clear, Theme.Colors.light]),
+                    //         startPoint: .top,
+                    //         endPoint: .bottom
+                    //     )
+                    // )
                     
                     Spacer()
                 }
                 .frame(maxWidth: 600)
             }
             .background(
-                ZStack {
-                    Image("LandingImage")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .ignoresSafeArea()
-                        .alignmentGuide(.top) { _ in 0 }
-                }
-                , alignment: .top)
+                    NoiseBackground()
+            )
         }
         .background(Theme.Colors.light)
         .edgesIgnoringSafeArea(.all)   // Extend color to edges
@@ -168,6 +161,16 @@ struct RecipeView: View {
             
             let (ingredients, instructions) = try await RecipeParser.parseRecipe(from: htmlContent)
             
+            let randomColorIndex = Int.random(in: 0..<Theme.Colors.cardColors.count)
+            let recipeToSave = Recipe(
+                title: recipeTitle,
+                ingredients: ingredients,
+                instructions: instructions,
+                urlString: urlString,
+                accentColor: randomColorIndex
+            )
+            RecipeStorage.shared.saveRecipe(recipeToSave)
+            
             await MainActor.run {
                 self.recipeIngredients = ingredients
                 self.recipeInstructions = instructions
@@ -177,14 +180,6 @@ struct RecipeView: View {
                     self.errorMessage = "Could not find recipe content"
                     self.showError = true
                 } else {
-                    // Save recipe before navigating
-                    let recipe = Recipe(
-                        title: recipeTitle,
-                        ingredients: ingredients,
-                        instructions: instructions,
-                        urlString: urlString
-                    )
-                    RecipeStorage.shared.saveRecipe(recipe)
                     recentRecipes = RecipeStorage.shared.loadRecipes()
                     self.navigateToRecipe = true
                 }

@@ -36,17 +36,19 @@ fragment float4 fragmentShader(float4 pos [[position]],
                              constant Uniforms *uniforms [[buffer(0)]]) {
     float2 uv = pos.xy / float2(800, 600);
     
-    // Animate gradient center with more dramatic motion
+    // Animate gradient center with more dramatic motion and larger size
     float2 center = float2(
-        0.5 + sin(uniforms->time * 0.4) * 0.4 + cos(uniforms->time * 0.3) * 0.2,
-        0.5 + cos(uniforms->time * 0.35) * 0.4 + sin(uniforms->time * 0.25) * 0.2
+        0.5 + sin(uniforms->time * 0.4) * 0.6 + cos(uniforms->time * 0.3) * 0.3,
+        0.5 + cos(uniforms->time * 0.35) * 0.6 + sin(uniforms->time * 0.25) * 0.3
     );
     
-    // Create irregular animated gradient using multiple sine waves
+    // Create mesh gradient shape with increased scale
+    float2 meshScale = float2(4.0, 4.0); // Doubled from 8.0 to 16.0
+    float2 meshUV = (uv - center) * meshScale;
+    float meshPattern = sin(meshUV.x) * sin(meshUV.y);
     float gradient = length(uv - center);
-    gradient += sin(uv.x * 10.0 + uniforms->time) * 0.1;
-    gradient += cos(uv.y * 8.0 - uniforms->time * 0.5) * 0.15;
-    gradient += sin((uv.x + uv.y) * 6.0 + uniforms->time * 0.7) * 0.08;
+    gradient += meshPattern * 0.15;
+    gradient += sin(uniforms->time * 0.5) * 0.1; // Add subtle animation
     
     // Create falling grain effect
     float grain = 0;
@@ -62,16 +64,16 @@ fragment float4 fragmentShader(float4 pos [[position]],
     
     // Mix gradient with colors
     float4 color;
-    if (gradient < 0.3) {  // Reduced range for color1
+    if (gradient < 0.3) {  // Decreased range for color1
         color = mix(uniforms->color1, uniforms->color2, gradient * 3.33);
-    } else if (gradient < 0.5) {  // Reduced range for color2
+    } else if (gradient < 0.5) {  // Decreased range for color2
         color = mix(uniforms->color2, uniforms->color3, (gradient - 0.3) * 5.0);
-    } else {  // Expanded range for color3 and color4
+    } else {  // Increased range for color3 and color4
         color = mix(uniforms->color3, uniforms->color4, (gradient - 0.5) * 2.0);
     }
     
     // Add grain to final color
-    color += float4(grain * 0.6); // Increased grain intensity from 0.15 to 0.35
+    color += float4(grain * 0.3); // Increased grain intensity from 0.15 to 0.35
     
     return color;
 }
