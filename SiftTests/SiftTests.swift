@@ -6,9 +6,9 @@
 //
 
 import Testing
-@testable import Cookbook
+@testable import Sift
 
-struct CookbookTests {
+struct SiftTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
