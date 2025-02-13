@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftSoup
 
 @main
-struct CookbookApp: App {
+struct SiftApp: App {
     
     var body: some Scene {
         WindowGroup {

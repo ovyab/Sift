@@ -29,18 +29,18 @@
 
 /* Begin PBXFileReference section */
 		942AC9492D5D2C1200A71D21 /* NoiseBackground.metallib */ = {isa = PBXFileReference; explicitFileType = "archive.metal-library"; includeInIndex = 0; path = NoiseBackground.metallib; sourceTree = BUILT_PRODUCTS_DIR; };
-		943128F52D502EFF0059769B /* Sift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sift.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		943129052D502F000059769B /* SiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9431290F2D502F000059769B /* SiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		943128F52D502EFF0059769B /* Hello.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hello.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		943129052D502F000059769B /* HelloTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9431290F2D502F000059769B /* HelloUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		94376C4C2D5A860F00C8A2B1 /* Exceptions for "Cookbook" folder in "Sift" target */ = {
+		94376C4C2D5A860F00C8A2B1 /* Exceptions for "Cookbook" folder in "Hello" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 943128F42D502EFF0059769B /* Sift */;
+			target = 943128F42D502EFF0059769B /* Hello */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -53,7 +53,7 @@
 		943128F72D502EFF0059769B /* Cookbook */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				94376C4C2D5A860F00C8A2B1 /* Exceptions for "Cookbook" folder in "Sift" target */,
+				94376C4C2D5A860F00C8A2B1 /* Exceptions for "Cookbook" folder in "Hello" target */,
 			);
 			path = Cookbook;
 			sourceTree = "<group>";
@@ -110,9 +110,9 @@
 		943128F62D502EFF0059769B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				943128F52D502EFF0059769B /* Sift.app */,
-				943129052D502F000059769B /* SiftTests.xctest */,
-				9431290F2D502F000059769B /* SiftUITests.xctest */,
+				943128F52D502EFF0059769B /* Hello.app */,
+				943129052D502F000059769B /* HelloTests.xctest */,
+				9431290F2D502F000059769B /* HelloUITests.xctest */,
 				942AC9492D5D2C1200A71D21 /* NoiseBackground.metallib */,
 			);
 			name = Products;
@@ -141,9 +141,9 @@
 			productReference = 942AC9492D5D2C1200A71D21 /* NoiseBackground.metallib */;
 			productType = "com.apple.product-type.metal-library";
 		};
-		943128F42D502EFF0059769B /* Sift */ = {
+		943128F42D502EFF0059769B /* Hello */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 943129192D502F000059769B /* Build configuration list for PBXNativeTarget "Sift" */;
+			buildConfigurationList = 943129192D502F000059769B /* Build configuration list for PBXNativeTarget "Hello" */;
 			buildPhases = (
 				943128F12D502EFF0059769B /* Sources */,
 				943128F22D502EFF0059769B /* Frameworks */,
@@ -156,17 +156,17 @@
 			fileSystemSynchronizedGroups = (
 				943128F72D502EFF0059769B /* Cookbook */,
 			);
-			name = Sift;
+			name = Hello;
 			packageProductDependencies = (
 				943129262D512F840059769B /* SwiftSoup */,
 			);
 			productName = Cookbook;
-			productReference = 943128F52D502EFF0059769B /* Sift.app */;
+			productReference = 943128F52D502EFF0059769B /* Hello.app */;
 			productType = "com.apple.product-type.application";
 		};
-		943129042D502F000059769B /* SiftTests */ = {
+		943129042D502F000059769B /* HelloTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9431291C2D502F000059769B /* Build configuration list for PBXNativeTarget "SiftTests" */;
+			buildConfigurationList = 9431291C2D502F000059769B /* Build configuration list for PBXNativeTarget "HelloTests" */;
 			buildPhases = (
 				943129012D502F000059769B /* Sources */,
 				943129022D502F000059769B /* Frameworks */,
@@ -180,16 +180,16 @@
 			fileSystemSynchronizedGroups = (
 				943129082D502F000059769B /* CookbookTests */,
 			);
-			name = SiftTests;
+			name = HelloTests;
 			packageProductDependencies = (
 			);
 			productName = CookbookTests;
-			productReference = 943129052D502F000059769B /* SiftTests.xctest */;
+			productReference = 943129052D502F000059769B /* HelloTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9431290E2D502F000059769B /* SiftUITests */ = {
+		9431290E2D502F000059769B /* HelloUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9431291F2D502F000059769B /* Build configuration list for PBXNativeTarget "SiftUITests" */;
+			buildConfigurationList = 9431291F2D502F000059769B /* Build configuration list for PBXNativeTarget "HelloUITests" */;
 			buildPhases = (
 				9431290B2D502F000059769B /* Sources */,
 				9431290C2D502F000059769B /* Frameworks */,
@@ -203,11 +203,11 @@
 			fileSystemSynchronizedGroups = (
 				943129122D502F000059769B /* CookbookUITests */,
 			);
-			name = SiftUITests;
+			name = HelloUITests;
 			packageProductDependencies = (
 			);
 			productName = CookbookUITests;
-			productReference = 9431290F2D502F000059769B /* SiftUITests.xctest */;
+			productReference = 9431290F2D502F000059769B /* HelloUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -236,7 +236,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 943128F02D502EFF0059769B /* Build configuration list for PBXProject "Sift" */;
+			buildConfigurationList = 943128F02D502EFF0059769B /* Build configuration list for PBXProject "Hello" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -253,9 +253,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				943128F42D502EFF0059769B /* Sift */,
-				943129042D502F000059769B /* SiftTests */,
-				9431290E2D502F000059769B /* SiftUITests */,
+				943128F42D502EFF0059769B /* Hello */,
+				943129042D502F000059769B /* HelloTests */,
+				9431290E2D502F000059769B /* HelloUITests */,
 				942AC9482D5D2C1200A71D21 /* NoiseBackground */,
 			);
 		};
@@ -319,12 +319,12 @@
 /* Begin PBXTargetDependency section */
 		943129072D502F000059769B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 943128F42D502EFF0059769B /* Sift */;
+			target = 943128F42D502EFF0059769B /* Hello */;
 			targetProxy = 943129062D502F000059769B /* PBXContainerItemProxy */;
 		};
 		943129112D502F000059769B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 943128F42D502EFF0059769B /* Sift */;
+			target = 943128F42D502EFF0059769B /* Hello */;
 			targetProxy = 943129102D502F000059769B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -609,7 +609,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		943128F02D502EFF0059769B /* Build configuration list for PBXProject "Sift" */ = {
+		943128F02D502EFF0059769B /* Build configuration list for PBXProject "Hello" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				943129172D502F000059769B /* Debug */,
@@ -618,7 +618,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		943129192D502F000059769B /* Build configuration list for PBXNativeTarget "Sift" */ = {
+		943129192D502F000059769B /* Build configuration list for PBXNativeTarget "Hello" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9431291A2D502F000059769B /* Debug */,
@@ -627,7 +627,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9431291C2D502F000059769B /* Build configuration list for PBXNativeTarget "SiftTests" */ = {
+		9431291C2D502F000059769B /* Build configuration list for PBXNativeTarget "HelloTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9431291D2D502F000059769B /* Debug */,
@@ -636,7 +636,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9431291F2D502F000059769B /* Build configuration list for PBXNativeTarget "SiftUITests" */ = {
+		9431291F2D502F000059769B /* Build configuration list for PBXNativeTarget "HelloUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				943129202D502F000059769B /* Debug */,
