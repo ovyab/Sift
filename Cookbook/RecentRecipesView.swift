@@ -6,10 +6,9 @@ struct RecentRecipesView: View {
     
     private let cardColors: [Color] = [
         Theme.Colors.purple,
-        Theme.Colors.butter,
         Theme.Colors.yellow,
-        Theme.Colors.green,
-        Theme.Colors.pink
+        Theme.Colors.darkGreen,
+        Theme.Colors.green
     ]
     
     var body: some View {
@@ -18,12 +17,12 @@ struct RecentRecipesView: View {
                 // Title Section
                 HStack {
                     Text("Recent Recipes")
-                        .font(Theme.Typography.h1)
-                        .foregroundColor(Theme.Colors.light)
+                        .font(Theme.Typography.title)
+                        .foregroundColor(Theme.Colors.dark)
                     Spacer()
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 24)
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
                 
                 // Recipe Cards
                 ForEach(Array(recentRecipes.enumerated()), id: \.element.id) { index, recipe in
@@ -34,12 +33,12 @@ struct RecentRecipesView: View {
                         urlString: recipe.urlString,
                         accentColor: cardColors[recipe.accentColor]
                     )) {
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(recipe.title)
                                 .font(Theme.Typography.h1)
-                                .foregroundColor(Theme.Colors.dark)
-                            
-                            Text(formatURL(recipe.urlString))
+                                .foregroundColor(cardColors[recipe.accentColor])
+                                .multilineTextAlignment(.leading)
+                            Text("from " + formatURL(recipe.urlString))
                                 .font(Theme.Typography.eyebrow)
                                 .foregroundColor(Theme.Colors.dark.opacity(0.6))
                                 .lineLimit(1)
@@ -48,23 +47,25 @@ struct RecentRecipesView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 16)
-                        .background(cardColors[recipe.accentColor])
+                        .background(.white)    
                         .cornerRadius(24)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(cardColors[recipe.accentColor].opacity(0.5), lineWidth: 1)
+                        )
                     }
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 16)
             }
         }
-        .background(Theme.Colors.dark)
+        .background(Theme.Colors.light)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             dismiss()
         }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                Text("Back")
-            }
-            .foregroundColor(Theme.Colors.grey)
+            Text("← Back")
+                .font(Theme.Typography.p1)
+            .foregroundColor(Theme.Colors.dark)    
         })
         .onAppear {
             recentRecipes = RecipeStorage.shared.loadRecipes()

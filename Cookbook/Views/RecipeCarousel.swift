@@ -13,7 +13,7 @@ struct RecipeCarousel: View {
                         Image(imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 200, height: 200)
+                            .frame(width: 100, height: 100)
                             .cornerRadius(60)
                     }
                 }
@@ -22,7 +22,7 @@ struct RecipeCarousel: View {
             .onAppear {
                 withAnimation(.linear(duration: 40).repeatForever(autoreverses: false)) {
                     // Move by the width of one complete set of images
-                    offset = -CGFloat(images.count) * (200 + 16)
+                    offset = -CGFloat(images.count) * (100 + 16)
                 }
             }
         }

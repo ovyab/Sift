@@ -11,92 +11,92 @@ struct RecipeView: View {
     @State private var errorMessage: String? = nil
     @State private var showError = false
     @State private var recentRecipes: [Recipe] = []
-
-
+    
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 48) {
-                // Spacer to push content down
-                Spacer()
-                    .frame(height: 50)
-
-                // Carousel
-                RecipeCarousel()
-                    .frame(height: 200)
-                // Title Section
-                VStack(spacing: 12) {
-                    Text("Make online\nrecipes easier\nto read")
-                        .font(Theme.Typography.title)
-                        .lineSpacing(-48) // Adjusted line spacing for tighter text
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Theme.Colors.light)
-                    Text("Sift uses AI to convert online recipes\ninto clean, user-friendly ones in seconds.")
-                        .font(Theme.Typography.p1)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Theme.Colors.light)
-                }
-                
-                // Input and Buttons Section
-                VStack(spacing: 16) {
-                    // URL Input
-                    HStack {
-                        TextField("Paste a recipe URL →", text: $urlString)
+        ZStack {
+            ScrollView {
+                VStack(spacing: 32) {
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40) // Adjust size as needed
+                        .padding(.top, 80) // Adjust top padding as needed
+                    Spacer()
+                        .frame(height: 100)
+                    VStack(spacing: 12) {
+                        Text("Make long recipes easy to read") 
+                            .font(Theme.Typography.title)
+                            .lineSpacing(-108) // Adjusted line spacing for tighter text
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Theme.Colors.dark)
+                        Text("Enter a recipe URL and Sift spits out a\nclean, user friendly version.")
                             .font(Theme.Typography.p1)
-                            .foregroundColor(Theme.Colors.light)
-                            .padding(.leading, 24)
-                        Button(action: {
-                            if let clipboardString = UIPasteboard.general.string {
-                                urlString = clipboardString
-                            }
-                        }) {
-                            Image(systemName: "doc.on.doc")
-                                .foregroundColor(Theme.Colors.green)
-                                .frame(width: 44, height: 44)
-                                .background(Theme.Colors.light)
-                                .clipShape(Circle())
-                        }
-                        .padding(.trailing, 8)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Theme.Colors.dark)
                     }
-                    .frame(height: 56)
-                    .background(
-                        LinearGradient(gradient: Gradient(colors: [Color(red: 1, green: 1, blue: 1).opacity(0.06), Color(red: 1, green: 1, blue: 1).opacity(0.02)]), startPoint: .topTrailing, endPoint: .bottomLeading)
-)   
-                    .cornerRadius(28)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 28)
-                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                    )
                     
-                    // Buttons
-                    Button {
-                        Task {
-                            await fetchRecipe()
-                        }
-                    } label: {
-                        if isLoading {
-                            HStack {
-                                Text("Sifting through recipe...")
-                                ProgressView()
-                                    .tint(.white)
+                    // Input and Buttons Section
+                    VStack(spacing: 16) {
+                        // URL Input
+                        HStack {
+                            TextField("Paste a recipe URL →", text: $urlString)
+                                .font(Theme.Typography.p1)
+                                .foregroundColor(Theme.Colors.dark)
+                                .padding(.leading, 24)
+                               
+                            Button(action: {
+                                if let clipboardString = UIPasteboard.general.string {
+                                    urlString = clipboardString
+                                }
+                            }) {
+                                Image(systemName: "doc.on.doc")
+                                    .foregroundColor(Theme.Colors.light)
+                                    .frame(width: 44, height: 44)
+                                    .background(Theme.Colors.darkGreen)
+                                    .clipShape(Circle())
                             }
-                        } else {
-                            Text("Sift recipe")
+                            .padding(.trailing, 8)
                         }
+                        .frame(height: 56)
+                        .background(.white)
+                        .cornerRadius(28)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 28)
+                                .stroke(Theme.Colors.dark.opacity(0.5), lineWidth: 1)
+                        )
+                        
+                        // Buttons
+                        Button {
+                            Task {
+                                await fetchRecipe()
+                            }
+                        } label: {
+                            if isLoading {
+                                HStack {
+                                    Text("Sifting through recipe...")
+                                    ProgressView()
+                                        .tint(.white)
+                                }
+                            } else {
+                                Text("Sift recipe")
+                            }
+                        }
+                        .buttonStyle(Theme.PrimaryButtonStyle(isEnabled: !urlString.isEmpty))
+                        .disabled(urlString.isEmpty || isLoading)
+                        NavigationLink("View recent recipes →") {
+                            RecentRecipesView()
+                        }
+                        .buttonStyle(Theme.SecondaryButtonStyle())
                     }
-                    .buttonStyle(Theme.PrimaryButtonStyle(isEnabled: !urlString.isEmpty))
-                    .disabled(urlString.isEmpty || isLoading)
-                    NavigationLink("View recent recipes") {
-                        RecentRecipesView()
-                    }
-                    .buttonStyle(Theme.SecondaryButtonStyle())
+                    .padding(.horizontal, 16)
+                    
+                    Spacer()
                 }
-                .padding(.horizontal, 24)
-                
-                Spacer()
+                .frame(maxWidth: 600)
             }
-            .frame(maxWidth: 600)
         }
-        .background(Theme.Colors.dark)  // Add dark background color
+        .background(Theme.Colors.light)  // Add dark background color
         .edgesIgnoringSafeArea(.all)   // Extend color to edges
         .alert("Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
@@ -119,7 +119,6 @@ struct RecipeView: View {
             recentRecipes = RecipeStorage.shared.loadRecipes()
         }
     }
-    
     
     func fetchRecipe() async {
         isLoading = true
@@ -183,11 +182,10 @@ struct ContentView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarHidden(true)
         }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
     }
 }
 
 #Preview {
     ContentView()
 }
-
