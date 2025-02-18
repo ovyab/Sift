@@ -103,7 +103,7 @@ struct RecipeJSON: Codable {
 class OpenAIService {
     static let shared = OpenAIService()
     
-    private let apiKey: String = "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" // Replace with your actual API key
+    private let apiKey: String = Config.openAIKey
     private let endpoint = "https://api.openai.com/v1/chat/completions"
     
     private init() {} // Make constructor private for singleton
